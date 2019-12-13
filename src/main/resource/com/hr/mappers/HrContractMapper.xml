@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hr.dao.HrContractDao">
+    <resultMap type="HrContract" id="HrContractResult">
+        <result property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <association property="hrFiles" column="filesId" select="com.hr.dao.HrFilesDao.findById"/>
+    </resultMap>
+
+    <select id="countList" resultMap="HrContractResult">
+		select * from t_contract
+	</select>
+
+    <select id="list" parameterType="Map" resultMap="HrContractResult">
+        select * from t_contract
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="filesId!=null and filesId!='' ">
+                and filesId = #{filesId}
+            </if>
+            <if test="content!=null and content!='' ">
+                and content like #{content}
+            </if>
+            <if test="startDateStr!=null and startDateStr!='' ">
+                and startDate like #{startDateStr}
+            </if>
+            <if test="endDateStr!=null and endDateStr!='' ">
+                and endDate like #{endDateStr}
+            </if>
+        </where>
+        <!--        order by name desc-->
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="HrContractResult">
+		select * from t_contract where id=#{id}
+	</select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from t_contract
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="filesId!=null and filesId!='' ">
+                and filesId = #{filesId}
+            </if>
+            <if test="content!=null and content!='' ">
+                and content like #{content}
+            </if>
+            <if test="startDateStr!=null and startDateStr!='' ">
+                and startDate like #{startDateStr}
+            </if>
+            <if test="endDateStr!=null and endDateStr!='' ">
+                and endDate like #{endDateStr}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="HrContract">
+		insert into t_contract values(null,#{hrFiles.id},#{content},#{startDate},#{endDate})
+	</insert>
+
+    <update id="update" parameterType="HrContract">
+        update t_contract
+        <set>
+            <if test="hrFiles.id!=null">
+                filesId=#{hrFiles.id},
+            </if>
+            <if test="content!=null and content!=''">
+                content=#{content},
+            </if>
+            <if test="startDate!=null">
+                startDate=#{startDate},
+            </if>
+            <if test="endDate!=null">
+                endDate=#{endDate},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+		delete from t_contract where id=#{id}
+	</delete>
+
+</mapper>

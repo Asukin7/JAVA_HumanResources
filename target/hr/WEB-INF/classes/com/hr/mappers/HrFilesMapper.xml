@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hr.dao.HrFilesDao">
+    <resultMap type="HrFiles" id="HrFilesResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="phone" column="phone"/>
+        <result property="remark" column="remark"/>
+        <result property="joinDate" column="joinDate"/>
+        <result property="basicWage" column="basicWage"/>
+        <association property="hrPost" column="postId" select="com.hr.dao.HrPostDao.findById"/>
+    </resultMap>
+
+    <select id="countList" resultMap="HrFilesResult">
+		select * from t_files
+	</select>
+
+    <select id="list" parameterType="Map" resultMap="HrFilesResult">
+        select * from t_files
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="name!=null and name!='' ">
+                and name like #{name}
+            </if>
+            <if test="joinDateStr!=null and joinDateStr!='' ">
+                and joinDate like #{joinDateStr}
+            </if>
+        </where>
+<!--        order by name desc-->
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="HrFilesResult">
+		select * from t_files where id=#{id}
+	</select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from t_files
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="name!=null and name!='' ">
+                and name like #{name}
+            </if>
+            <if test="joinDateStr!=null and joinDateStr!='' ">
+                and joinDate like #{joinDateStr}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="HrFiles">
+		insert into t_files values(null,#{hrPost.id},#{name},#{sex},#{phone},#{remark},#{joinDate},#{basicWage})
+	</insert>
+
+    <update id="update" parameterType="HrFiles">
+        update t_files
+        <set>
+            <if test="hrPost.id!=null">
+                postId=#{hrPost.id},
+            </if>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+<!--            <if test="remark!=null and remark!=''">-->
+                remark=#{remark},
+<!--            </if>-->
+            <if test="joinDate!=null">
+                joinDate=#{joinDate},
+            </if>
+            <if test="basicWage!=null">
+                basicWage=#{basicWage},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+		delete from t_files where id=#{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hr.dao.HrTrainingSchemeDao">
+    <resultMap type="HrTrainingScheme" id="HrTrainingSchemeResult">
+        <result property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="isPass" column="isPass"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+<!--        <collection property="hrTrainingSchemeFilesList" column="id" select="com.hr.dao.HrTrainingSchemeFilesDao.findByHrTrainingSchemeID"/>-->
+    </resultMap>
+
+    <select id="countList" resultMap="HrTrainingSchemeResult">
+		select * from t_trainingScheme
+	</select>
+
+    <select id="list" parameterType="Map" resultMap="HrTrainingSchemeResult">
+        select * from t_trainingScheme
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="content!=null and content!='' ">
+                and content like #{content}
+            </if>
+            <if test="startDateStr!=null and startDateStr!='' ">
+                and startDate like #{startDateStr}
+            </if>
+            <if test="endDateStr!=null and endDateStr!='' ">
+                and endDate like #{endDateStr}
+            </if>
+            <if test="isPass==1 or isPass==-1 ">
+                and isPass = #{isPass}
+            </if>
+            <if test="isPass==0 ">
+                and isPass is null
+            </if>
+        </where>
+        <!--        order by name desc-->
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="HrTrainingSchemeResult">
+		select * from t_trainingScheme where id=#{id}
+	</select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from t_trainingScheme
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="content!=null and content!='' ">
+                and content like #{content}
+            </if>
+            <if test="startDateStr!=null and startDateStr!='' ">
+                and startDate like #{startDateStr}
+            </if>
+            <if test="endDateStr!=null and endDateStr!='' ">
+                and endDate like #{endDateStr}
+            </if>
+            <if test="isPass==1 or isPass==-1 ">
+                and isPass = #{isPass}
+            </if>
+            <if test="isPass==0 ">
+                and isPass is null
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="HrTrainingScheme">
+		insert into t_trainingScheme values(null,#{content},#{isPass},#{startDate},#{endDate})
+	</insert>
+
+    <update id="update" parameterType="HrTrainingScheme">
+        update t_trainingScheme
+        <set>
+            <if test="content!=null and content!=''">
+                content=#{content},
+            </if>
+            <if test="isPass!=null">
+                isPass=#{isPass},
+            </if>
+            <if test="startDate!=null">
+                startDate=#{startDate},
+            </if>
+            <if test="endDate!=null">
+                endDate=#{endDate},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+		delete from t_trainingScheme where id=#{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hr.dao.HrPostTransferDao">
+    <resultMap type="HrPostTransfer" id="HrPostTransferResult">
+        <result property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="submitDate" column="submitDate"/>
+        <result property="isPass" column="isPass"/>
+        <result property="auditDate" column="auditDate"/>
+        <association property="hrFiles" column="filesId" select="com.hr.dao.HrFilesDao.findById"/>
+        <association property="hrPost" column="postTransferId" select="com.hr.dao.HrPostDao.findById"/>
+    </resultMap>
+
+    <select id="countList" resultMap="HrPostTransferResult">
+		select * from t_postTransfer
+	</select>
+
+    <select id="list" parameterType="Map" resultMap="HrPostTransferResult">
+        select * from t_postTransfer
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="filesId!=null and filesId!='' ">
+                and filesId = #{filesId}
+            </if>
+            <if test="content!=null and content!='' ">
+                and content like #{content}
+            </if>
+            <if test="submitDateStr!=null and submitDateStr!='' ">
+                and submitDate like #{submitDateStr}
+            </if>
+            <if test="isPass==1 or isPass==-1 ">
+                and isPass = #{isPass}
+            </if>
+            <if test="isPass==0 ">
+                and isPass is null
+            </if>
+            <if test="auditDateStr!=null and auditDateStr!='' ">
+                and auditDate like #{auditDateStr}
+            </if>
+        </where>
+        <!--        order by name desc-->
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="HrPostTransferResult">
+		select * from t_postTransfer where id=#{id}
+	</select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from t_postTransfer
+        <where>
+            <if test="id!=null and id!='' ">
+                and id = #{id}
+            </if>
+            <if test="filesId!=null and filesId!='' ">
+                and filesId = #{filesId}
+            </if>
+            <if test="content!=null and content!='' ">
+                and content like #{content}
+            </if>
+            <if test="submitDateStr!=null and submitDateStr!='' ">
+                and submitDate like #{submitDateStr}
+            </if>
+            <if test="isPass==1 or isPass==-1 ">
+                and isPass = #{isPass}
+            </if>
+            <if test="isPass==0 ">
+                and isPass is null
+            </if>
+            <if test="auditDateStr!=null and auditDateStr!='' ">
+                and auditDate like #{auditDateStr}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="HrPostTransfer">
+		insert into t_postTransfer values(null,#{hrFiles.id},#{hrPost.id},#{content},now(),#{isPass},null)
+	</insert>
+
+    <update id="update" parameterType="HrPostTransfer">
+        update t_postTransfer
+        <set>
+            <if test="hrFiles.id!=null">
+                filesId=#{hrFiles.id},
+            </if>
+            <if test="hrPost.id!=null">
+                postTransferId=#{hrPost.id},
+            </if>
+            <if test="content!=null and content!=''">
+                content=#{content},
+            </if>
+<!--            <if test="submitDate!=null">-->
+<!--                submitDate=#{submitDate},-->
+<!--            </if>-->
+            <if test="isPass!=null">
+                isPass=#{isPass},
+            </if>
+            <if test="isPass!=null and isPass!=0">
+                auditDate=now(),
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+		delete from t_postTransfer where id=#{id}
+	</delete>
+
+</mapper>

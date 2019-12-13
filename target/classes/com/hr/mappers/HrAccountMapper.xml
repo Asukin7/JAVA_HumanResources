@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hr.dao.HrAccountDao">
+    <resultMap type="HrAccount" id="HrAccountResult">
+        <result property="account" column="account"/>
+        <result property="filesId" column="filesId"/>
+        <result property="password" column="password"/>
+        <result property="admin" column="admin"/>
+        <result property="files" column="files"/>
+        <result property="post" column="post"/>
+        <result property="wages" column="wages"/>
+        <result property="train" column="train"/>
+    </resultMap>
+
+    <select id="list" parameterType="Map" resultMap="HrAccountResult">
+        select * from t_account
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from t_account
+    </select>
+
+    <select id="getByAccount" parameterType="String" resultMap="HrAccountResult">
+        select * from t_account where account=#{account}
+    </select>
+
+    <insert id="add" parameterType="HrAccount">
+		insert into t_account values(#{account},#{filesId},#{password},#{admin},#{files},#{post},#{wages},#{train})
+	</insert>
+
+    <update id="update" parameterType="HrAccount">
+        update t_account
+        <set>
+            <if test="filesId!=null and filesId!=''">
+                filesId=#{filesId},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="admin!=null and admin!=''">
+                admin=#{admin},
+            </if>
+            <if test="files!=null and files!=''">
+                files=#{files},
+            </if>
+            <if test="post!=null and post!=''">
+                post=#{post},
+            </if>
+            <if test="wages!=null and wages!=''">
+                wages=#{wages},
+            </if>
+            <if test="train!=null and train!=''">
+                train=#{train},
+            </if>
+        </set>
+        where account=#{account}
+    </update>
+
+    <delete id="delete" parameterType="HrAccount">
+		delete from t_account where account=#{account}
+	</delete>
+
+</mapper>

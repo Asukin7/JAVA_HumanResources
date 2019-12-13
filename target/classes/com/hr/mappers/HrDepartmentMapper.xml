@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hr.dao.HrDepartmentDao">
+    <resultMap type="HrDepartment" id="HrDepartmentResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="countList" resultMap="HrDepartmentResult">
+		select * from t_department
+	</select>
+
+    <select id="list" parameterType="Map" resultMap="HrDepartmentResult">
+        select * from t_department
+        <where>
+            <if test="name!=null and name!='' ">
+                and name like #{name}
+            </if>
+        </where>
+<!--        order by name desc-->
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="HrDepartmentResult">
+		select * from t_department where id=#{id}
+	</select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from t_department
+        <where>
+            <if test="name!=null and name!='' ">
+                and name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="HrDepartment">
+		insert into t_department values(null,#{name})
+	</insert>
+
+    <update id="update" parameterType="HrDepartment">
+        update t_department
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+		delete from t_department where id=#{id}
+	</delete>
+
+</mapper>

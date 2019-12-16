@@ -71,7 +71,7 @@
             <if test="hrDepartmentBonus.id!=null">
                 departmentBonusId=#{hrDepartmentBonus.id},
             </if>
-            <if test="attendanceLength!=attendanceLength">
+            <if test="attendanceLength!=null">
                 attendanceLength=#{attendanceLength},
             </if>
             <if test="basicWage!=null">

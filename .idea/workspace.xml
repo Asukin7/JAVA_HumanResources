@@ -6,7 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def026da-e00d-4bcf-99ad-cc9851ccaf08" name="Default Changelist" comment="" />
+    <list default="true" id="def026da-e00d-4bcf-99ad-cc9851ccaf08" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resource/com/hr/mappers/HrWagesMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resource/com/hr/mappers/HrWagesMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/hr.war" beforeDir="false" afterPath="$PROJECT_DIR$/target/hr.war" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +29,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -204,10 +211,29 @@
       <workItem from="1575946694117" duration="3358000" />
       <workItem from="1576037446412" duration="33000" />
       <workItem from="1576203169683" duration="796000" />
+      <workItem from="1576204396866" duration="16000" />
+      <workItem from="1576323872872" duration="599000" />
+      <workItem from="1576479070418" duration="659000" />
+      <workItem from="1576505694419" duration="413000" />
+      <workItem from="1576507210104" duration="1057000" />
+      <workItem from="1576508612121" duration="94000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
